@@ -3,7 +3,7 @@
 
     <groupId>com.ericsson.mts</groupId>
     <artifactId>mts</artifactId>
-    <version>master-SNAPSHOT</version>
+    <version>6.6.5</version>
     <packaging>jar</packaging>
 
     <url>http://mts.arm-tool.com</url>
@@ -12,7 +12,8 @@
         <antlr4.version>4.7.2</antlr4.version>
         <project.build.sourceEncoding>ISO-8859-15</project.build.sourceEncoding>
 
-        <target.mts.dir>${project.build.directory}/mts</target.mts.dir>
+        <target.mts.dir>${project.build.directory}/../../mts</target.mts.dir>
+        <!--<target.mts.dir>${project.build.directory}/mts</target.mts.dir>-->
 
         <target.izpack.dir>${project.build.directory}/izpack</target.izpack.dir>
         <izpack.version>4.3.5</izpack.version>
@@ -160,13 +161,24 @@
                                     <directory>${basedir}/src/main/</directory>
                                     <filtering>false</filtering>
                                     <includes>
-                                        <include>bin/**</include>
+                                        <!--<include>bin/**</include>-->
+                                        <include>bin/icon.ico</include>
+                                        <include>bin/icon.png</include>
+                                        <include>bin/java_arguments</include>
+                                        <include>bin/java_home</include>
+                                        <include>bin/java_memory</include>
+                                        <include>bin/startClass.bat</include>
+                                        <include>bin/startClass.sh</include>
+                                        <include>bin/startCmd.bat</include>
+                                        <include>bin/startCmd.sh</include>
+                                        <include>bin/startGui.bat</include>
+                                        <include>bin/startGui.sh</include>
                                         <include>conf/**</include>
-                                        <include>doc/**</include>
-                                        <include>functions/**</include>
+                                        <!--<include>doc/**</include>
+                                        <include>functions/**</include>-->
                                         <include>lib/**</include>
                                         <include>logs</include>
-                                        <include>tutorial/**</include>
+                                        <!--<include>tutorial/**</include>-->
                                     </includes>
                                     <excludes>
                                         <exclude>conf/version.txt</exclude>
@@ -195,14 +207,14 @@
                             </resources>
                         </configuration>
                     </execution>
-                    <execution>
+<!--                    <execution>
                         <id>copy-izpack-resources</id>
                         <phase>package</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${target.izpack.dir}</outputDirectory>
+                            <outputDirectory>target/izpack</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${basedir}/src/main/izpack</directory>
@@ -220,10 +232,10 @@
                                 </resource>
                             </resources>
                         </configuration>
-                    </execution>
+                    </execution>-->
                 </executions>
             </plugin>
-            <plugin>
+<!--            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.6.0</version>
@@ -310,8 +322,8 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>            
-            <!-- build izpack installer -->
+            </plugin>
+            &lt;!&ndash; build izpack installer &ndash;&gt;
             <plugin>
                 <groupId>org.codehaus.izpack</groupId>
                 <artifactId>izpack-maven-plugin</artifactId>
@@ -331,12 +343,12 @@
                             <goal>izpack</goal>
                         </goals>
                         <configuration>
-                            <izpackBasedir>${target.izpack.dir}</izpackBasedir>
+                            <izpackBasedir>target/izpack</izpackBasedir>
                             <installerFile>target/${project.build.finalName}-installer.jar</installerFile>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
 
@@ -473,35 +485,35 @@
             <artifactId>mts-asn1-xml</artifactId>
             <version>0.0.5</version>
         </dependency>
-                
-        <!-- DEPENDENCIES THAT ARE NOT IN PUBLIC REPOS -->        
+
+        <!-- DEPENDENCIES THAT ARE NOT IN PUBLIC REPOS -->
         <dependency>
             <groupId>com.devoteam.srit.xmlloader.sigtran.ap.generated.map</groupId>
             <artifactId>BN_classes_map</artifactId>
             <version>1.0.0</version>
             <scope>system</scope> 
-            <systemPath>${basedir}/src/main/lib/BN_classes_map.jar</systemPath>   
+            <systemPath>${basedir}/src/main/lib/BN_classes_map.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.devoteam.srit.xmlloader.sigtran.ap.generated.tcap</groupId>
             <artifactId>BN_classes_tcap</artifactId>
             <version>1.0.0</version>
             <scope>system</scope> 
-            <systemPath>${basedir}/src/main/lib/BN_classes_tcap.jar</systemPath>   
+            <systemPath>${basedir}/src/main/lib/BN_classes_tcap.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.devoteam.srit.xmlloader.sigtran.ap.generated.cap</groupId>
             <artifactId>BN_classes_cap</artifactId>
             <version>1.0.0</version>
             <scope>system</scope> 
-            <systemPath>${basedir}/src/main/lib/BN_classes_cap.jar</systemPath>   
+            <systemPath>${basedir}/src/main/lib/BN_classes_cap.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>mibble-parser</groupId>
             <artifactId>mibble-parser</artifactId>
             <version>2.9.2</version>
             <scope>system</scope> 
-            <systemPath>${basedir}/lib/mibble-parser-2.9.2.jar</systemPath>   
+            <systemPath>${basedir}/lib/mibble-parser-2.9.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>Charset-SMS</groupId>
@@ -515,28 +527,28 @@
             <artifactId>pcm</artifactId>
             <version>0.1</version>
             <scope>system</scope> 
-            <systemPath>${basedir}/lib/pcm.jar</systemPath>   
+            <systemPath>${basedir}/lib/pcm.jar</systemPath>
         </dependency>        
         <dependency>
             <groupId>pcmext</groupId>
             <artifactId>pcmext</artifactId>
             <version>0.1</version>
             <scope>system</scope> 
-            <systemPath>${basedir}/lib/pcmext.jar</systemPath>   
-        </dependency>    
+            <systemPath>${basedir}/lib/pcmext.jar</systemPath>
+        </dependency>
         <dependency>
             <groupId>JavaSCTP</groupId>
             <artifactId>JavaSCTP</artifactId>
             <version>0.5.8</version>
             <scope>system</scope> 
-            <systemPath>${basedir}/lib/JavaSCTP-0-5-8.jar</systemPath>   
+            <systemPath>${basedir}/lib/JavaSCTP-0-5-8.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>jpcap</groupId>
             <artifactId>jpcap</artifactId>
             <version>0.7</version>
             <scope>system</scope> 
-            <systemPath>${basedir}/lib/jpcap.jar</systemPath>   
+            <systemPath>${basedir}/lib/jpcap.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

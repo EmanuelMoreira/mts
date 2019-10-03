@@ -1,2 +1,2 @@
 #!/bin/sh
-./startClass.sh com.devoteam.srit.xmlloader.master.Slave $*
+startClass.sh com.devoteam.srit.xmlloader.master.Slave $*

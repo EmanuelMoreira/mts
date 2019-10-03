@@ -286,7 +286,7 @@ public class MsgHttp extends Msg {
     // methods for the XML display / parsing of the message
     //---------------------------------------------------------------------
 
-    /** Returns a short description of the message. Used for logging as INFO level */
+    /* Returns a short description of the message. Used for logging as INFO level */
     /**
      * This methods HAS TO be quick to execute for performance reason
      */
@@ -371,7 +371,10 @@ public class MsgHttp extends Msg {
 
             String phrase = "";
             if (parts.length > 2) {
-                phrase = parts[2];
+                for(int i = 2; i < parts.length; i++) {
+                    phrase += parts[i] + " ";
+                }
+                phrase = phrase.substring(0,phrase.length()-1);
             }
 
             responseMessage = new BasicClassicHttpResponse(Integer.parseInt(parts[1]), phrase);
@@ -457,12 +460,6 @@ public class MsgHttp extends Msg {
                 // do nothing, we should not add a CRLF at the end of the data when multipart
             }
 
-            String contentType = contentTypeHeaders[0].getValue();
-            int semicolonIndex = contentType.indexOf(";");
-            if(-1 != semicolonIndex) {
-                contentType = contentType.substring(0, semicolonIndex);
-            }
-
             /**
              * Do not add CRLF at the end of the content in case Content-Encoding is GZIP
              * This is a (bad) patch :/
@@ -487,20 +484,21 @@ public class MsgHttp extends Msg {
             } else {
                 messageContent += "\r\n"; // when chunked, there must be a double CRLF after the last chunk size
             }
-
-            HttpEntity entity = new ByteArrayEntity(messageContent.getBytes(), ContentType.create(contentType));
-
-            if (null != responseMessage) {
-                responseMessage.setEntity(entity);
-            } else if (null != requestMessage) {
-                requestMessage.setEntity(entity);
-            } else {
-                entity = null;
-            }
         } else {
+            messageContent = datas;
             if (contentLengthPresent) {
                 currentMessage.addHeader("Content-Length", Integer.toString(0));
             }
+        }
+
+        HttpEntity entity = new ByteArrayEntity(messageContent.getBytes(), null);
+
+        if (null != responseMessage) {
+            responseMessage.setEntity(entity);
+        } else if (null != requestMessage) {
+            requestMessage.setEntity(entity);
+        } else {
+            entity = null;
         }
 
     }
@@ -530,13 +528,7 @@ public class MsgHttp extends Msg {
             }
         } else if (params.length == 1 && params[0].equalsIgnoreCase("firstline")) {
             //---------------------------------------------------------------------- firstline -
-            if (message instanceof HttpRequest) {
-
-                var.add(getType() + " " + ((HttpRequest) message).getScheme() + "://" + ((HttpRequest) message).getAuthority().toString() + " " + ((HttpRequest) message).getVersion());
-            } else {
-                var.add(((HttpResponse) message).getVersion() + " " + ((HttpResponse) message).getCode() + " " + ((HttpResponse) message).getReasonPhrase());
-
-            }
+            var.add(getFirstLine());
         } else if (params.length > 1 && params[0].equalsIgnoreCase("firstline")) {
             //---------------------------------------------------------------------- firstline:Version -
             if (params[1].equalsIgnoreCase("version")) {
@@ -551,9 +543,12 @@ public class MsgHttp extends Msg {
             //---------------------------------------------------------------------- firstline:URI -
             else if (params[1].equalsIgnoreCase("uri")) {
                 if (message instanceof HttpRequest) {
-
-                    var.add(((HttpRequest) message).getScheme() + "://" + ((HttpRequest) message).getAuthority().toString());
-
+                    // if authority isn't set, the execution won't succeed
+                    if (((HttpRequest) message).getAuthority()!=null){
+                        var.add(((HttpRequest) message).getScheme() + "://" + ((HttpRequest) message).getAuthority().toString());
+                    }else {
+                        var.add(((HttpRequest) message).getPath());
+                    }
                 }
             } else if (params[1].equalsIgnoreCase("reasonPhrase")) {
                 if (message instanceof HttpResponse) {

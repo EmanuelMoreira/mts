@@ -101,17 +101,16 @@ public class SocketClientHttp
         {
                 ClassicHttpRequest classicHttpRequest = (ClassicHttpRequest) msg.getMessage();
                 clientConnection.sendRequestHeader(classicHttpRequest);
-                String method = classicHttpRequest.getMethod().toLowerCase();
-                if (!method.equals("get") && !method.equals("head")){
-                	clientConnection.sendRequestEntity(classicHttpRequest);
-                	if (classicHttpRequest.getEntity() == null)
-                	{
-                		clientConnection.flush();
-                	}
-                }
-                else 
-                {
-                	clientConnection.flush();
+                String content = msg.getMessageContent();
+
+                if (content == null || content.equals("")) {
+                    clientConnection.flush();
+                } else {
+                    clientConnection.sendRequestEntity(classicHttpRequest);
+                    if (classicHttpRequest.getEntity() == null)
+                    {
+                        clientConnection.flush();
+                    }
                 }
         }
         catch(Exception e)

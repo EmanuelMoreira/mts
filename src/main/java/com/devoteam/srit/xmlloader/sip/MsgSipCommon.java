@@ -60,7 +60,7 @@ public abstract class MsgSipCommon extends Msg
                     if(code >= 200)
                     {
                     	Parameter cSeqParam = this.getParameter("header.CSeq.Number");
-                        if (cSeqParam.length() > 0)
+                        if (cSeqParam.length() > 0 && this.getListenpoint()!=null)
                         {
                             this.responseTransactionId = new TransactionId(this.getListenpoint().getName() + "|" + this.getDialogId() + "|" +  cSeqParam.get(0));
                         }
@@ -69,7 +69,7 @@ public abstract class MsgSipCommon extends Msg
                     {
                     	Parameter cSeqNumberParam = this.getParameter("header.CSeq.Number");
                     	Parameter cSeqMethodParam = this.getParameter("header.CSeq.Method");
-                        if (cSeqNumberParam.length() > 0 && cSeqMethodParam.length() > 0)
+                        if (cSeqNumberParam.length() > 0 && cSeqMethodParam.length() > 0 && this.getListenpoint()!=null)
                         {
 	                        String cSeqNumber = cSeqNumberParam.get(0).toString();
 	                        String cSeqMethod = cSeqMethodParam.get(0).toString();
@@ -92,7 +92,7 @@ public abstract class MsgSipCommon extends Msg
                 if("ACK".equals(this.getType()) || "CANCEL".equals(this.getType()))
                 {
                     Parameter cSeqParam = this.getParameter("header.CSeq.Number");
-                    if (cSeqParam.length() > 0)
+                    if (cSeqParam.length() > 0 && this.getListenpoint()!=null)
                     {
                         this.responseTransactionId = new TransactionId(this.getListenpoint().getName() + "|" + this.getDialogId() + "|" + cSeqParam.get(0));
                     }
@@ -103,7 +103,7 @@ public abstract class MsgSipCommon extends Msg
                 	Parameter rAckCSeqNumberParam = this.getParameter("header.RAck.CSeqNumber");
                 	Parameter rAckMethodParam = this.getParameter("header.RAck.Method");
 
-                    if (rAckNumberParam.length() > 0 && rAckCSeqNumberParam.length() > 0 && rAckMethodParam.length() > 0) 
+                    if (rAckNumberParam.length() > 0 && rAckCSeqNumberParam.length() > 0 && rAckMethodParam.length() > 0 && this.getListenpoint()!=null)
                     {
                         String rAckNumber = rAckNumberParam.get(0).toString();
                         String rAckCSeqNumber = rAckCSeqNumberParam.get(0).toString();

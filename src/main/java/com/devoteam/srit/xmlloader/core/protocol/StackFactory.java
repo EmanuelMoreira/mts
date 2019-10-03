@@ -139,7 +139,7 @@ public class StackFactory {
             f.setAccessible(true);
             String protocolVarname = f.getName();
             if (protocolVarname.startsWith("PROTOCOL_")) {
-                if (!(protocolVarname.equals("PROTOCOL_" + PROTOCOL_SCTP) && OSValidator.isWindows())) {
+                if (!((protocolVarname.equals("PROTOCOL_" + PROTOCOL_SCTP) || protocolVarname.equals("PROTOCOL_" + PROTOCOL_DIAMETER) || protocolVarname.equals("PROTOCOL_" + PROTOCOL_S1AP) || protocolVarname.equals("PROTOCOL_" + PROTOCOL_NGAP)) && OSValidator.isWindows())) {
                     String protocol = (String) f.get(StackFactory.class);
                     getStack(protocol);
                 }
