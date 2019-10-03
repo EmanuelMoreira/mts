@@ -35,6 +35,8 @@ import javax.swing.JSeparator;
 import com.devoteam.srit.xmlloader.core.log.GlobalLogger;
 import com.devoteam.srit.xmlloader.core.log.TextEvent;
 import com.devoteam.srit.xmlloader.core.utils.Config;
+import com.devoteam.srit.xmlloader.core.utils.system.OSValidator;
+
 import java.awt.EventQueue;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -308,7 +310,8 @@ public class GUIMenuHelper {
         jMenu.add(jMenuItemReload = createJMenuItem(actionListener, "Reload", FILE_RELOAD));
         jMenu.add(jMenuItemClose = createJMenuItem(actionListener, "Close", FILE_CLOSE));
 
-
+        int modifier = OSValidator.isMac() ? java.awt.event.InputEvent.META_MASK : java.awt.event.InputEvent.CTRL_MASK;
+        jMenuItemReload.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, modifier));
 
         jMenu.add(new JSeparator());
         jMenu.add(jMenuOpenTestFile = createJMenuItem(actionListener, "Edit", WINDOWS_OPEN_TEST_FILE));
